@@ -36,4 +36,5 @@ Candidates: database for every 10 instances or vitess.
 ## Roadmap
 
 1) Generate and store certificates in Vault. Apply certificates on existing API.
-2) Run workloads on nomad servers, including persistance on bare-metal. Deploy and update cluster automatically. 
+2) Run workloads on nomad servers, including persistance on bare-metal. Deploy and update cluster automatically. \
+3) Aggregate logs and make buckups. 
