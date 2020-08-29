@@ -1,6 +1,6 @@
 ---
 
-- hosts: all
+- hosts: consul-master-nodes
   gather_facts: yes
   tasks:
     - debug: 
@@ -8,7 +8,7 @@
       failed_when: "{{consul_encryption_key|length != 44}}"
     - set_fact:
         consul_version: "{{ consul_version | default('1.8.3') }}"
-        consul_retry_join_string: "{% for host in vars['hostvars'] %}{% if hostvars[host]['ansible_default_ipv4']['address'] != ansible_default_ipv4.address %} --retry-join \"{{ hostvars[host]['ansible_default_ipv4']['address'] }}\"{% endif %}{% endfor %}"
+        consul_retry_join_string: "{% for host in vars['hostvars'] %}{% for key, value in vars['hostvars'][host].items() %}{% if key == 'ansible_default_ipv4' and value['address'] != ansible_default_ipv4.address %} --retry-join \"{{ value['address'] }}\"{% endif %}{% endfor %}{% endfor %}"
     - debug: 
         var: consul_retry_join_string
     - include: "install-docker.yml" 

@@ -1,6 +1,6 @@
 ---
 
-- hosts: all
+- hosts: load-balancer-nodes
   gather_facts: yes
   tasks:
     - set_fact:
