@@ -1,0 +1,24 @@
+---
+
+# - name: run consul container with bootstrap
+#   docker_container:
+#     name: consul
+#     state: absent
+
+# - name: Recursively remove directory
+#   file:
+#     path: /var/consul
+#     state: absent
+
+- name: run consul container with bootstrap
+  docker_container:
+    name: consul
+    image: "consul:{{consul_version}}"
+    state: started
+    detach: True
+    restart_policy: always
+    network_mode: host
+    hostname: "{{ ansible_hostname }}"
+    volumes:
+    - /var/consul:/consul/data
+    command: agent -data-dir /consul/data -server {{consul_retry_join_string}} -advertise "{{consul_advertise}}" -encrypt "{{consul_encryption_key}}" -bootstrap-expect=2

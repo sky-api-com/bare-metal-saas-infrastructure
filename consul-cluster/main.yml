@@ -1,0 +1,18 @@
+---
+
+- hosts: all
+  gather_facts: yes
+  tasks:
+    - debug: 
+        msg: "check that length of consul_encryption_key is 44 symbols. got {{consul_encryption_key|length}}"
+      failed_when: "{{consul_encryption_key|length != 44}}"
+    - set_fact:
+        consul_version: "{{ consul_version | default('1.8.3') }}"
+        consul_bootstrap_expect: "{{ consul_bootstrap_expect | default(1) }}"
+        consul_retry_join_string: "{% for host in vars['hostvars'] %}{% if hostvars[host]['ansible_default_ipv4']['address'] != ansible_default_ipv4.address %} --retry-join \"{{ hostvars[host]['ansible_default_ipv4']['address'] }}\"{% endif %}{% endfor %}"
+        consul_advertise: "{{ansible_default_ipv4.address}}"
+    - debug: 
+        var: consul_retry_join_string
+    - include: "install-docker.yml" 
+    - include: "install-consul.yml" 
+  vars: 
