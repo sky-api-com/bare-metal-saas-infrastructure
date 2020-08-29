@@ -21,4 +21,4 @@
     hostname: "{{ ansible_hostname }}"
     volumes:
     - /var/consul:/consul/data
-    command: agent -data-dir /consul/data -server {{consul_retry_join_string}} -bind "{{ansible_default_ipv4.address}}" -encrypt "{{consul_encryption_key}}" -bootstrap-expect=2
+    command: agent -data-dir /consul/data --retry-join={{CONSUL_SERVER}} -bind "{{ansible_default_ipv4.address}}" -encrypt "{{CONSUL_ENCRYPTION_KEY}}"

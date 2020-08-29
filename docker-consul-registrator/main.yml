@@ -1,0 +1,10 @@
+---
+
+- hosts: all
+  gather_facts: yes
+  tasks:
+    - set_fact:
+        consul_version: "{{ consul_version | default('1.8.3') }}"
+    - include: "install-docker.yml" 
+    - include: "install-consul-client.yml" 
+    - include: "registrator.yml" 

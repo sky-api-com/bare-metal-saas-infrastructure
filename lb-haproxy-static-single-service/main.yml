@@ -1,0 +1,9 @@
+---
+
+- hosts: all
+  gather_facts: yes
+  tasks:
+    - set_fact:
+        CONSUL_ADDRESS: 127.0.0.1:8600
+        MAX_BACKENDS: "{{ MAX_BACKENDS | default('20') }}"
+    - include: "haproxy-static.yml"

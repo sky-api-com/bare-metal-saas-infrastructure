@@ -1,0 +1,10 @@
+
+- name: docker_container
+  docker_container:
+    name: registrator
+    image: gliderlabs/registrator:latest
+    state: started
+    volumes:
+      - "/var/run/docker.sock:/tmp/docker.sock"
+    network_mode: host
+    command: -resync 360 consul://localhost:8500 

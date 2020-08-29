@@ -1,0 +1,21 @@
+global
+    log 127.0.0.1   local0
+    log 127.0.0.1   local1 notice
+    stats timeout 30s
+    maxconn 4096
+ 
+resolvers consul
+  nameserver consul {{CONSUL_ADDRESS}}
+  resolve_retries 30
+  timeout retry 2s
+  hold valid 120s
+  accepted_payload_size 8192
+
+frontend all
+    bind 0.0.0.0:80
+    default_backend back
+
+backend back
+  mode http
+  balance leastconn
+  server-template ordering-service {{MAX_BACKENDS}} _{{SERVICE_NAME_IN_CONSUL}}._tcp.service.consul check resolvers consul

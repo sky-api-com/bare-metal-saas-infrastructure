@@ -1,0 +1,14 @@
+---
+
+- name: Copy file
+  template:
+    src: ./templates/haproxy.cfg.j2
+    dest: /etc/haproxy.cfg
+
+- docker_container:
+    name: haproxy
+    image: haproxy
+    state: started
+    volumes:
+      - "/etc/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg"
+    network_mode: host
