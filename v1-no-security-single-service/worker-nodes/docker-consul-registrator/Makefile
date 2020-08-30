@@ -1,8 +1,8 @@
 it:
-	make install CONSUL_KEY="$(shell cat consul_key.txt)" CONSUL_SERVER="$(shell cat consul_server_ip.txt)"
+	make install CONSUL_KEY="$(shell cat ../../consul_key.txt)" CONSUL_SERVER="$(shell cat ../../consul_server_ip.txt)"
 
 install:
-	ansible-playbook -i inventory.txt main.yml -e CONSUL_ENCRYPTION_KEY=${CONSUL_KEY} -e CONSUL_SERVER=${CONSUL_SERVER}
+	ansible-playbook -i ../../inventory.txt main.yml -e CONSUL_ENCRYPTION_KEY=${CONSUL_KEY} -e CONSUL_SERVER=${CONSUL_SERVER}
 
 dev:
 	docker rm -f consul; true

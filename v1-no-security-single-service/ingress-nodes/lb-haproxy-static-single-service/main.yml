@@ -1,6 +1,6 @@
 ---
 
-- hosts: load-balancer-nodes
+- hosts: ingress-nodes
   gather_facts: yes
   tasks:
     - set_fact:
