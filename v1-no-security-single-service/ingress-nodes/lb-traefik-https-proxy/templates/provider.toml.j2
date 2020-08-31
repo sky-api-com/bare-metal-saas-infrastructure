@@ -1,0 +1,11 @@
+[http.services]
+  [http.services.port80.loadBalancer]
+    [[http.services.port80.loadBalancer.servers]]
+      url = "http://127.0.0.1:80"
+
+[http.routers]
+    [http.routers.router0]
+      service = "port80"
+      rule = "Host(`{{HTTPS_DOMAIN}}`)"
+      [http.routers.router0.tls]
+        certResolver = "myresolver"

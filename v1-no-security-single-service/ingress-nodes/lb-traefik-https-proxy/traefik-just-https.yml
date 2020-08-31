@@ -1,0 +1,27 @@
+---
+
+- name: Create a directory if it does not exist
+  file:
+    path: /etc/traefik/fileProvider/
+    state: directory
+
+- name: traefik.toml
+  template:
+    src: ./templates/traefik.toml.j2
+    dest: /etc/traefik/traefik.toml
+
+- name: provider.toml
+  template:
+    src: ./templates/provider.toml.j2
+    dest: /etc/traefik/fileProvider/provider.toml
+
+- docker_container:
+    name: traefik
+    image: 'traefik:v2.3'
+    state: started
+    restart: yes
+    volumes:
+      - "/etc/traefik/:/etc/traefik/"
+    network_mode: host
+    env:
+      CLOUDFLARE_DNS_API_TOKEN: "{{CLOUDFLARE_DNS_API_TOKEN}}"

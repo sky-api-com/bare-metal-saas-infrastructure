@@ -1,0 +1,21 @@
+[certificatesResolvers.myresolver.acme]
+  email = "{{ ACME_EMAIL }}"
+  storage = "/etc/traefik/acme.json"
+  #caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
+  caServer = "https://acme-v02.api.letsencrypt.org/directory"
+  [certificatesResolvers.myresolver.acme.dnsChallenge]
+    provider = "cloudflare"
+
+[entryPoints]
+  [entryPoints.websecure]
+    address = ":443"
+
+[providers.file]
+  directory = "/etc/traefik/fileProvider/"
+  watch = true
+
+[log]
+  level = "DEBUG"
+
+[api]
+  insecure = true

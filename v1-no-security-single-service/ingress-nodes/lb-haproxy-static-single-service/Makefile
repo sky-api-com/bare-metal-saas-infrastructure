@@ -3,3 +3,4 @@ it:
 
 install:
 	ansible-playbook -i ../../inventory.txt main.yml -e SERVICE_NAME_IN_CONSUL=${SERVICE_NAME_IN_CONSUL}
+
