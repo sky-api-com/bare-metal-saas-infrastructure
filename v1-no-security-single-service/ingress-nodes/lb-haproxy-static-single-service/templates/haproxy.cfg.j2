@@ -8,7 +8,7 @@ resolvers consul
   nameserver consul {{CONSUL_ADDRESS}}
   resolve_retries 30
   timeout retry 2s
-  hold valid 120s
+  hold valid 5s
   accepted_payload_size 8192
 
 frontend all
@@ -17,5 +17,5 @@ frontend all
 
 backend back
   mode http
-  balance leastconn
+  balance roundrobin
   server-template ordering-service {{MAX_BACKENDS}} _{{SERVICE_NAME_IN_CONSUL}}._tcp.service.consul check resolvers consul
