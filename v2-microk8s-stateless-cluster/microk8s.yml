@@ -17,11 +17,15 @@
     classic: yes
     channel: 1.19/stable
     state: present
+    
+- name: Add registry
+  blockinfile:
+    path: /var/snap/microk8s/current/args/containerd-template.toml
+    block: |
+      #my repo 2
+            [plugins."io.containerd.grpc.v1.cri".registry.mirrors."docker.pkg.github.com"]
+                endpoint = ["https://docker.pkg.github.com"]
+  register: registryupdated
 
-#- shell: snap refresh microk8s --channel=1.19/stable    
-- shell: microk8s status --wait-ready
-- shell: microk8s add-node | grep "microk8s join" | head -n2 | tail -n1
-- shell: microk8s leave
-
-# TODO join automatically
-
+- shell: "/snap/bin/microk8s stop; sleep 5; /snap/bin/microk8s start"
+  when: registryupdated.changed
