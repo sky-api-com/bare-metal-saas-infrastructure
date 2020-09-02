@@ -1,0 +1,50 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-staging-dns
+spec:
+  acme:
+    email: $ACME_EMAIL
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: letsencrypt-issuer-account-key
+    solvers:
+    - dns01: 
+        cloudflare:
+          email: $ACME_EMAIL
+          apiKeySecretRef:
+            name: cloudflare-apikey-secret-$DNS_ZONE_NAME
+            key: apikey
+      selector:
+            dnsZones:
+            - '$DNS_ZONE'
+---
+apiVersion: cert-manager.io/v1alpha2
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-staging-http
+spec:
+  acme:
+    email: $ACME_EMAIL
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: letsencrypt-issuer-account-key
+    solvers:
+    - http01: 
+        ingress:
+          class: nginx
+---
+apiVersion: cert-manager.io/v1alpha2
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-prod-http
+spec:
+  acme:
+    email: $ACME_EMAIL
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: letsencrypt-issuer-account-key
+    solvers:
+    - http01: 
+        ingress:
+          class: nginx
